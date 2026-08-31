@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Footer = () => {
   return (
     <footer className="border-t border-border bg-gradient-soft">
@@ -16,7 +18,7 @@ const Footer = () => {
             <h4 className="font-display font-semibold mb-3">Navegação</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><a href="#sobre" className="hover:text-primary transition-smooth">Sobre</a></li>
-              <li><a href="#blog" className="hover:text-primary transition-smooth">Blog</a></li>
+              <li><Link href="/blog" className="hover:text-primary transition-smooth">Blog</Link></li>
               <li><a href="#equipe" className="hover:text-primary transition-smooth">Equipe</a></li>
             </ul>
           </div>

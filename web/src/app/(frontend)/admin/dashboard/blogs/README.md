@@ -1,15 +1,11 @@
-# Lessons Admin Module
+# Blogs Admin Module
 
-This directory contains the admin UI for managing Lessons (Lições) in the Noctiluz platform.
+Admin UI for managing Blogs (metadata in `page.tsx`/`_components`, content blocks in `[blogId]/content/`).
 
 ## Features
-- Markdown + LaTeX editor with live preview (see `MarkdownEditor.tsx`)
-- Ready for image upload integration
-- SOLID principles: Editor is reusable, single-responsibility, and easy to extend
-
-## How to Extend
-- To add image upload, add a button to `MarkdownEditor` that triggers your S3 upload flow and inserts the image markdown.
-- For lesson CRUD, add forms and connect to your backend API.
+- Markdown + LaTeX editor with live preview (`[blogId]/content/_components/MarkdownField.tsx`, via `@uiw/react-md-editor` + `remark-math`/`rehype-katex`)
+- Cover image upload via presigned S3 URLs (`@/actions/uploads`)
+- Content blocks (markdown or video) with reorder/delete
 
 ## Dependencies
 - [`@uiw/react-md-editor`](https://github.com/uiwjs/react-md-editor)
@@ -17,22 +13,15 @@ This directory contains the admin UI for managing Lessons (Lições) in the Noct
 - [`rehype-katex`](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex)
 - [`katex`](https://katex.org/)
 
-## Coding Style
-- Follows project conventions for hooks, components, and file structure.
-- Editor is isolated for testability and reuse. 
-
 # Math Examples
 
 ## Inline Math
 - Sum: $\sum_{i=1}^{n} x_i$
 - Fraction: $\frac{a}{b}$
-- Greek letters: $\alpha, \beta, \gamma$
-- Subscript/Superscript: $x^2, x_i$
 
 ## Block Math
 $$
 \begin{align}
-y &= mx + b \\
-&= 2x + 3
+y &= mx + b
 \end{align}
 $$

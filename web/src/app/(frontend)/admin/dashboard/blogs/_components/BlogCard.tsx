@@ -26,7 +26,7 @@ export function BlogCard({ blog, onEdit, onDelete }: BlogCardProps) {
   }, []);
 
   const handleDelete = async () => {
-    if (onDelete && confirm(`Tem certeza que deseja excluir a lição "${blog.name}"?`)) {
+    if (onDelete && confirm(`Tem certeza que deseja excluir o blog "${blog.name}"?`)) {
       await onDelete(blog.id);
     }
   };
