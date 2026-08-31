@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import PasswordRequirement from "./PasswordRequirement";
 import RequiredTag from "@/components/base/input/RequiredTag";
-import { hasLowercase, hasMinLength, hasNumber, hasUppercase, validatePassword, validateConfirmPassword } from "@/utils";
+import { hasLowercase, hasMinLength, hasNumber, hasUppercase, validatePassword, validateConfirmPassword } from "@/utils/validations";
 
 import { toast } from "react-hot-toast";
 import { redirect } from "next/navigation";

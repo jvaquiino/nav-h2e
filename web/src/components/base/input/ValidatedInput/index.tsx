@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Check, Eye, EyeOff, X } from 'lucide-react';
 import styles from './input.module.css';
 import { cn } from '@/lib/utils';
-import { validateEmail } from '@/utils';
+import { validateEmail } from '@/utils/validations';
 import type { InputHTMLAttributes } from 'react';
 
 interface ValidatedInputProps extends InputHTMLAttributes<HTMLInputElement> {

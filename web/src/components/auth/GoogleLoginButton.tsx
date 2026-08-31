@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 // import { useSearchParams } from "next/navigation";
-import { isSafeRedirect } from "@/utils";
+import { isSafeRedirect } from "@/utils/validations";
 
 import { authClient } from "@/lib/auth-client";
 import { ButtonHTMLAttributes } from "react";
