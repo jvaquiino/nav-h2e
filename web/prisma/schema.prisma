@@ -19,7 +19,50 @@ enum BlogContentType {
   VIDEO
 }
 
-// modelos de exemplo abaixo (pode deletar)
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+}
+
+model Document {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  fileUrl     String
+  fileKey     String
+  mimeType    String
+  status      DocumentStatus @default(PENDING)
+  error       String?
+
+  uploadedAt DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  chunks DocumentChunk[]
+
+  @@index([status])
+}
+
+model DocumentChunk {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  order      Int
+  content    String
+  embedding  Float[]
+  tokenCount Int?
+
+  @@index([documentId])
+}
+
+model ChatRateLimit {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  key         String   @unique
+  count       Int      @default(0)
+  windowStart DateTime
+}
+
 model Blog {
   id            String @id @default(auto()) @map("_id") @db.ObjectId
   name          String
@@ -55,7 +98,6 @@ model BlogContentBlock {
 
   @@unique([blogId, order])
 }
-// modelos de exemplo acima (pode deletar)
 
 model User {
   // nao mexer entre aqui >
