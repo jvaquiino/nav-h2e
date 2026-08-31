@@ -39,4 +39,21 @@ export const updatePasswordSchema = z.object({
   newPassword: passwordSchema,
 }).strict()
 
+export const roleSchema = z.object({
+  role: z.enum(["USER", "ADMIN", "SUPER_ADMIN"], "Role inválida"),
+}).strict()
+
+export const inviteAdminSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Nome deve ter pelo menos 2 caracteres")
+    .max(50, "Nome deve ter no máximo 50 caracteres")
+    .regex(/^[a-zA-ZÀ-ÿ\s]+$/, "Nome deve conter apenas letras e espaços")
+    .transform(str => str.trim()),
+  email: emailSchema,
+  role: z.enum(["ADMIN", "SUPER_ADMIN"], "Role inválida"),
+}).strict()
+
 export type LoginData = z.infer<typeof loginSchema>;
+export type RoleInput = z.infer<typeof roleSchema>;
+export type InviteAdminInput = z.infer<typeof inviteAdminSchema>;

@@ -6,28 +6,25 @@ import prisma from "./app/(backend)/services/db";
 import { customSession } from "better-auth/plugins";
 import { getUserRole } from "@/backend/services/auth";
 import { expo } from "@better-auth/expo";
-// import { sendEmail } from "./lib/email";
-// import { ResetPasswordEmail } from "./lib/email/templates/ResetPasswordEmail";
- 
+import { sendEmail } from "./lib/email";
+import { ResetPasswordEmail } from "./lib/email/templates/ResetPasswordEmail";
+
 export const auth = betterAuth({
     baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
     database: prismaAdapter(prisma, {
         provider: "mongodb",
     }),
-    emailAndPassword: {  
+    emailAndPassword: {
       enabled: true,
-      // sendResetPassword: async ({ user, url /*, token*/ }, ) => {
-        // // url already includes the reset token; just email it.
-        // await sendEmail({
-          // to: user.email,
-          // subject: "Reset your password",
-          // react: ResetPasswordEmail({ name: user.name, resetUrl: url }),
-        // });
-      // },
-      // // optional: runs after a successful reset
-      // onPasswordReset: async ({ user }) => {
-        // console.log("Password reset for:", user.email);
-      // },
+      sendResetPassword: async ({ user, url /*, token*/ }) => {
+        // url already includes the reset token; just email it.
+        // reused both for "esqueci minha senha" and para o admin convidado definir sua senha
+        await sendEmail({
+          to: user.email,
+          subject: "Defina sua senha",
+          react: ResetPasswordEmail({ name: user.name, resetUrl: url }),
+        });
+      },
     },
     user: {
         deleteUser: { 

@@ -65,6 +65,14 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
     }
 
+    // ADMIN não pode mexer em contas de outros ADMIN/SUPER_ADMIN (só o próprio SUPER_ADMIN pode, via /api/admins)
+    if (userFromRequest.role === 'ADMIN' && id !== userFromRequest.id) {
+      const targetUser = await findUserById(id);
+      if (targetUser && (targetUser.role === 'ADMIN' || targetUser.role === 'SUPER_ADMIN')) {
+        return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+      }
+    }
+
     const user = await deleteUser(id);
     return NextResponse.json(user);
   } catch (error) {
@@ -104,6 +112,14 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     // só permite um usuário de role USER se auto atualizar
     if (userFromRequest.role === 'USER' && id !== userFromRequest.id) {
       return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+    }
+
+    // ADMIN não pode mexer em contas de outros ADMIN/SUPER_ADMIN (só o próprio SUPER_ADMIN pode, via /api/admins)
+    if (userFromRequest.role === 'ADMIN' && id !== userFromRequest.id) {
+      const targetUser = await findUserById(id);
+      if (targetUser && (targetUser.role === 'ADMIN' || targetUser.role === 'SUPER_ADMIN')) {
+        return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
+      }
     }
 
     const body = await validBody(request);
