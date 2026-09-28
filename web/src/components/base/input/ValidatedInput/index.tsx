@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Check, Eye, EyeOff, X } from 'lucide-react';
 import styles from './input.module.css';
 import { cn } from '@/lib/utils';
-import { validateEmail } from '@/utils';
+import { validateEmail } from '@/utils/validations';
 import type { InputHTMLAttributes } from 'react';
 
 interface ValidatedInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -45,7 +45,8 @@ function ValidatedInput({
 
   const isControlled = value !== undefined && setValue !== undefined;
 
-  const showValid = externallyControlledValid ?? internalValid;
+  // Só mostra o ícone de validação depois que o usuário digitou algo.
+  const showValid = String(isControlled ? value : inputValue) === '' ? null : externallyControlledValid ?? internalValid;
   const inputCurrentValue = isControlled ? value : inputValue;
 
   const validate = useMemo(() => overrideValidate ?? ((val: string) => {

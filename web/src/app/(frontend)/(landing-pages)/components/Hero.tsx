@@ -1,62 +1,51 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Leaf, ChevronDown } from "lucide-react";
+import { Hull, Waterline } from "@/components/base/Hull";
+import { OpenChatButton } from "@/components/chat/ChatWidget";
+
+const headline = "text-[clamp(3rem,8vw,7.5rem)] font-extrabold leading-[0.92] tracking-[-0.03em] [font-stretch:125%]";
 
 const Hero = () => {
   return (
-    <section id="top" className="relative min-h-screen flex items-end overflow-hidden">
-      {/* Background image */}
-      <img
-        src='/hero-h2.jpg'
-        alt="Embarcação movida a hidrogênio verde no oceano ao pôr do sol"
-        width={1920}
-        height={1280}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/10" />
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-transparent to-transparent" />
+    <section id="top" className="flex min-h-svh flex-col">
+      <h1 className="sr-only">O futuro navega a hidrogênio.</h1>
 
-      <div className="container relative z-10 pt-32 pb-16">
-        <div className="max-w-3xl animate-fade-up">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-background/80 backdrop-blur-md border border-primary/20 text-primary text-xs font-semibold mb-6 shadow-soft">
-            <Leaf className="w-3.5 h-3.5" />
-            Engenharia Naval · Poli-USP
-          </div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-[0.95] tracking-tight text-foreground">
-            O futuro navega a{" "}
-            <span className="gradient-primary-text">hidrogênio</span>.
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-foreground/80 max-w-2xl leading-relaxed">
-            <strong className="text-foreground">Hidrogênio Naval</strong> é o blog dos alunos de Engenharia Naval da Escola Politécnica da USP, dedicado a apresentar o hidrogênio como o combustível que vai transformar a navegação mundial.
+      {/* Acima d'água */}
+      <div className="container relative z-10 flex flex-1 items-end pt-28 pb-[calc(min(80vw,620px)/3*0.55+1rem)] md:pb-5">
+        <p aria-hidden className={`${headline} max-w-[11ch] md:max-w-[52%] lg:max-w-[9ch]`}>
+          O futuro navega
+        </p>
+      </div>
+
+      {/* Linha d'água com o casco apoiado nela */}
+      <div className="relative">
+        <Waterline animate />
+        <Hull
+          id="hero-hull"
+          animate
+          className="pointer-events-none absolute z-0 right-[4%] top-1.5 aspect-[3/1] w-[min(80vw,620px)] -translate-y-[55%] text-primary md:w-[min(46vw,620px)]"
+        />
+      </div>
+
+      {/* Abaixo d'água */}
+      <div className="bg-sea text-sea-foreground">
+        <div className="container relative z-10 flex flex-1 flex-col pt-4 pb-16 md:pb-20">
+          <p aria-hidden className={`${headline} text-sea-foreground`}>a hidrogênio.</p>
+
+          <p className="mt-8 max-w-xl font-serif text-lg leading-relaxed text-sea-foreground/80 md:text-xl">
+            O portal da Engenharia Naval da Poli-USP sobre o combustível que pode tirar o carbono da terra e do mar.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Button size="lg" className="bg-gradient-primary hover:opacity-90 transition-smooth shadow-glow group h-12 px-7">
-              Conhecer o projeto
-              <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-smooth" />
-            </Button>
-            <Button size="lg" variant="outline" className="h-12 px-7 bg-background/60 backdrop-blur-md border-primary/30 hover:bg-accent">
-              Ler artigos
-            </Button>
-          </div>
 
-          <div className="mt-16 grid grid-cols-3 gap-6 max-w-md">
-            {[
-              { v: "0", l: "Emissões CO₂" },
-              { v: "3×", l: "Mais energia" },
-              { v: "100%", l: "Renovável" },
-            ].map((s) => (
-              <div key={s.l}>
-                <div className="text-3xl md:text-4xl font-display font-bold text-primary">{s.v}</div>
-                <div className="text-xs text-muted-foreground mt-1">{s.l}</div>
-              </div>
-            ))}
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Button asChild size="lg" className="h-12 bg-sea-foreground px-6 text-sea hover:bg-white">
+              <Link href="/blog">Ler os artigos</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="h-12 border-sea-foreground/40 bg-transparent px-6 text-sea-foreground hover:bg-white/10 hover:text-sea-foreground">
+              <OpenChatButton>Perguntar ao assistente</OpenChatButton>
+            </Button>
           </div>
         </div>
       </div>
-
-      <a href="#sobre" aria-label="Rolar para baixo" className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-primary animate-float">
-        <ChevronDown className="w-7 h-7" />
-      </a>
     </section>
   );
 };

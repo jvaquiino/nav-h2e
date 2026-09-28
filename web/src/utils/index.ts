@@ -17,3 +17,5 @@ export const fetcher = (url: string, errorMessage: string) =>
     if (!res.ok) throw new Error(errorMessage)
     return res.json()
   })
+export const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short', year: 'numeric' }).format(date);

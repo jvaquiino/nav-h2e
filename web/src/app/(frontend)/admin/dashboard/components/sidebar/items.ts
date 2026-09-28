@@ -1,5 +1,6 @@
-import { 
-  ChartColumnIncreasing, 
+import {
+  ChartColumnIncreasing,
+  FileText,
   LibraryBig,
   Lock
 } from "lucide-react";
@@ -19,8 +20,14 @@ export const items = [
     icon: LibraryBig,
   },
   {
+    title: "Documentos",
+    url: `${baseUrl}/documents`,
+    icon: FileText,
+  },
+  {
     title: "Admins",
     url: `${baseUrl}/admins`,
     icon: Lock,
+    requiredRole: "SUPER_ADMIN",
   },
 ]

@@ -1,9 +1,28 @@
 import prisma from "@/backend/services/db";
 import { patchSchema } from "../../schemas";
 import { z } from "zod";
+import type { Role } from "@/generated/prisma";
 
 export async function getAllUsers() {
   return await prisma.user.findMany();
+}
+
+export async function getAdmins() {
+  return await prisma.user.findMany({
+    where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
+    orderBy: { createdAt: "asc" },
+  });
+}
+
+export async function countSuperAdmins() {
+  return await prisma.user.count({ where: { role: "SUPER_ADMIN" } });
+}
+
+export async function updateUserRole(id: string, role: Role) {
+  return await prisma.user.update({
+    where: { id },
+    data: { role },
+  });
 }
 
 export async function findUserById(id: string) {

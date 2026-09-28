@@ -45,12 +45,13 @@ function LoginForm() {
   };
 
   return ( 
-    <div className="lg:w-[90%] xl:w-[80%]">
-      <h2 className="font-bold text-[40px] text-center leading-12">Continue seu aprendizado</h2>
-      <form className="mt-6" onSubmit={handleSubmit}>
+    <div>
+      <h1 className="text-3xl font-bold tracking-tight">Entrar</h1>
+      <p className="mt-2 text-muted-foreground">Use sua conta para conversar com o assistente.</p>
+      <form className="mt-8" onSubmit={handleSubmit}>
         <ValidatedInput 
           title="E-mail"
-          placeholder="exemplo@noctiluz.com.br"
+          placeholder="voce@email.com"
           name="email"
           type="email"
           value={email}
@@ -84,14 +85,14 @@ function LoginForm() {
       </form>
       
       <div className="flex items-center gap-4 py-5">
-        <div className="flex-grow h-0.5 bg-gray-400" />
-        <p className="text-gray-400 text-lg">ou</p>
-        <div className="flex-grow h-0.5 bg-gray-400" />
+        <div className="h-px flex-grow bg-border" />
+        <p className="text-sm text-muted-foreground">ou</p>
+        <div className="h-px flex-grow bg-border" />
       </div>
 
       <GoogleAuthButton disabled={loading} text="Entrar com Google" />
 
-      <Link href='/cadastro' className="block w-fit mt-8 text-sm group">Ainda não tem uma conta? <span className="text-pink-500 colorTransition border-b border-transparent group-hover:border-pink-500">Cadastre-se</span></Link>
+      <Link href='/cadastro' className="block w-fit mt-8 text-sm text-muted-foreground group">Ainda não tem uma conta? <span className="font-semibold text-primary group-hover:underline underline-offset-4">Cadastre-se</span></Link>
     </div>
    );
 }

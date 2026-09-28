@@ -39,6 +39,21 @@ export async function getBlogById(id: string) {
   }
 }
 
+export async function getBlogBySlug(slug: string) {
+  try {
+    return await prisma.blog.findUnique({
+      where: { slug },
+      include: {
+        contentBlocks: {
+          orderBy: { order: "asc" },
+        },
+      },
+    });
+  } catch (error) {
+    throw new Error(String(error) || "Falha ao buscar blog");
+  }
+}
+
 export async function createBlog(data: CreateBlogInput) {
   try {
     return await prisma.blog.create({

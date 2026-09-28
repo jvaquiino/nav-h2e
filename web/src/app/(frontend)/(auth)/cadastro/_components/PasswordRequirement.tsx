@@ -9,7 +9,7 @@ function PasswordRequirement({ text, validateFunction }: PasswordRequirementProp
   const isValid = validateFunction();
 
   return ( 
-    <span className={clsx("flex gap-1 items-center", isValid ? "text-green-600" : "text-red-400")}>
+    <span className={clsx("flex gap-1 items-center", isValid ? "text-primary" : "text-destructive")}>
       {isValid ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />} 
       {text}
     </span>

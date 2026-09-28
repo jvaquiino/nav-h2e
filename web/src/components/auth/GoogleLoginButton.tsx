@@ -2,7 +2,7 @@
 import clsx from "clsx";
 import Image from "next/image";
 // import { useSearchParams } from "next/navigation";
-import { isSafeRedirect } from "@/utils";
+import { isSafeRedirect } from "@/utils/validations";
 
 import { authClient } from "@/lib/auth-client";
 import { ButtonHTMLAttributes } from "react";
@@ -24,7 +24,7 @@ function GoogleAuthButton({ className, text, ...props }: GoogleAuthButtonProps) 
       >
         <input type="hidden" name="type" value="google" />
 
-        <button type="submit" className='login-button tracking-4' {...props}
+        <button type="submit" className='login-button bg-card hover:bg-muted' {...props}
         onClick={async () => {
           if (props.disabled) {
             return
@@ -37,8 +37,8 @@ function GoogleAuthButton({ className, text, ...props }: GoogleAuthButtonProps) 
             <Image
               src={`/icons/google-logo.png`}
               alt={`Google logo`}
-              width={24}
-              height={24}
+              width={20}
+              height={20}
             />
 
           {text}
