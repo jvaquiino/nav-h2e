@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MessageCircle, Send, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,22 @@ import { Textarea } from '@/components/ui/textarea';
 import { authClient } from '@/lib/auth-client';
 import { streamChatResponse, type ChatMessage } from '@/actions/chat';
 import { getErrorMessage } from '@/utils/api-error';
+import { cn } from '@/lib/utils';
+
+const OPEN_CHAT_EVENT = 'chat:open';
+
+/** Abre o ChatWidget de qualquer lugar da página, opcionalmente com uma pergunta já digitada. */
+export function OpenChatButton({ question, className, children }: { question?: string; className?: string; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      className={className}
+      onClick={() => window.dispatchEvent(new CustomEvent(OPEN_CHAT_EVENT, { detail: question }))}
+    >
+      {children}
+    </button>
+  );
+}
 
 export function ChatWidget() {
   const router = useRouter();
@@ -18,16 +34,35 @@ export function ChatWidget() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
     requestAnimationFrame(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }));
   };
 
-  const handleBubbleClick = () => {
+  const requireLogin = () => {
     if (!session && !isPending) {
       router.push('/login');
-      return;
+      return true;
     }
+    return false;
+  };
+
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      if (requireLogin()) return;
+      const question = (e as CustomEvent<string | undefined>).detail;
+      if (question) setInput(question);
+      setTeaserDismissed(true);
+      setOpen(true);
+      requestAnimationFrame(() => inputRef.current?.focus());
+    };
+    window.addEventListener(OPEN_CHAT_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_CHAT_EVENT, onOpen);
+  });
+
+  const handleBubbleClick = () => {
+    if (requireLogin()) return;
     setTeaserDismissed(true);
     setOpen((prev) => !prev);
   };
@@ -67,42 +102,50 @@ export function ChatWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3 md:bottom-6 md:right-6">
       {open && (
-        <div className="flex flex-col h-[60vh] w-[90vw] max-w-sm rounded-lg border border-border/50 bg-card shadow-glow overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-gradient-primary text-primary-foreground">
-            <span className="font-display font-semibold text-sm">Assistente H₂ Naval</span>
-            <button onClick={() => setOpen(false)} aria-label="Fechar chat">
-              <X className="w-4 h-4" />
+        <div
+          role="dialog"
+          aria-label="Assistente Hidrogênio Naval"
+          className="flex h-[min(70vh,560px)] w-[calc(100vw-2rem)] max-w-sm origin-bottom-right animate-in fade-in zoom-in-95 flex-col overflow-hidden rounded-lg border border-border bg-card shadow-glow duration-200"
+        >
+          <div className="flex items-center justify-between bg-sea px-4 py-3 text-sea-foreground">
+            <div>
+              <p className="text-sm font-semibold">Assistente Hidrogênio Naval</p>
+              <p className="text-xs text-sea-foreground/70">Responde com base nas pesquisas do projeto</p>
+            </div>
+            <button onClick={() => setOpen(false)} aria-label="Fechar chat" className="rounded-sm p-1 hover:bg-white/10">
+              <X className="size-4" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+          <div className="flex-1 space-y-3 overflow-y-auto p-4">
             {messages.length === 0 && (
               <p className="text-sm text-muted-foreground">
-                Pergunte sobre hidrogênio como combustível, propulsão naval ou os documentos de
-                pesquisa do projeto.
+                Pergunte sobre hidrogênio como combustível, propulsão naval ou as pesquisas do projeto.
               </p>
             )}
 
             {messages.map((message, index) => (
-              <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div key={index} className={cn('flex', message.role === 'user' ? 'justify-end' : 'justify-start')}>
                 <div
-                  className={`max-w-[85%] rounded-lg px-4 py-2 text-sm whitespace-pre-wrap ${
+                  className={cn(
+                    'max-w-[85%] whitespace-pre-wrap rounded-lg px-3.5 py-2 text-sm leading-relaxed',
                     message.role === 'user'
-                      ? 'bg-gradient-primary text-primary-foreground'
-                      : 'bg-muted text-foreground'
-                  }`}
+                      ? 'rounded-br-sm bg-primary text-primary-foreground'
+                      : 'rounded-bl-sm bg-accent/60 text-foreground'
+                  )}
                 >
-                  {message.content || (loading && index === messages.length - 1 ? '...' : '')}
+                  {message.content || (loading && index === messages.length - 1 ? <Loader2 className="size-4 animate-spin" aria-label="Carregando" /> : '')}
                 </div>
               </div>
             ))}
             <div ref={bottomRef} />
           </div>
 
-          <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t border-border/50 p-3">
+          <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t border-border p-3">
             <Textarea
+              ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -111,36 +154,38 @@ export function ChatWidget() {
                   handleSubmit(e);
                 }
               }}
-              placeholder="Digite sua pergunta..."
-              className="min-h-11 max-h-32 resize-none"
+              placeholder="Digite sua pergunta"
+              aria-label="Sua pergunta"
+              className="max-h-32 min-h-11 resize-none"
               disabled={loading}
             />
-            <Button type="submit" disabled={loading || !input.trim()} size="icon">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+            <Button type="submit" disabled={loading || !input.trim()} size="icon" aria-label="Enviar pergunta">
+              {loading ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
             </Button>
           </form>
         </div>
       )}
 
       {!open && !teaserDismissed && (
-        <div className="flex items-center gap-2 rounded-full bg-card border border-border/50 shadow-soft px-4 py-2 text-sm animate-fade-up">
-          Tire suas dúvidas sobre Hidrogênio!
+        <div className="hidden animate-fade-up items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm shadow-sm sm:flex">
+          Tire suas dúvidas sobre hidrogênio
           <button
             onClick={() => setTeaserDismissed(true)}
             aria-label="Fechar aviso"
             className="text-muted-foreground hover:text-foreground"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="size-3.5" />
           </button>
         </div>
       )}
 
       <button
         onClick={handleBubbleClick}
-        aria-label="Abrir chat sobre hidrogênio"
-        className="w-14 h-14 rounded-full bg-gradient-primary text-primary-foreground shadow-glow grid place-items-center hover:opacity-90 transition-smooth"
+        aria-label={open ? 'Fechar chat' : 'Abrir chat sobre hidrogênio'}
+        aria-expanded={open}
+        className="grid size-14 place-items-center rounded-full bg-sea text-sea-foreground shadow-glow ring-1 ring-sea-foreground/25 transition-transform hover:scale-105 active:scale-95"
       >
-        {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
+        {open ? <X className="size-6" /> : <MessageCircle className="size-6" />}
       </button>
     </div>
   );
