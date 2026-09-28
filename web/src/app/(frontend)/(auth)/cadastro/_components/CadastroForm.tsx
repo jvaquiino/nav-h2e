@@ -72,24 +72,24 @@ function CadastroForm() {
   }, []);
 
   return ( 
-    <div className="flex items-center justify-center">
-      <div className="pt-6 mb-12 px-2">
-        <h2 className="font-bold text-[40px] text-center leading-12">Aprenda se divertindo!</h2>
-        <p className="text-gray-500 pt-1 mb-8">Lições, exercícios, simulações e muita interatividade customizados <b>da forma que você preferir</b></p>
+    <div>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Criar conta</h1>
+        <p className="mt-2 mb-8 text-muted-foreground">Com uma conta você pode conversar com o assistente sobre hidrogênio.</p>
         
-        <GoogleAuthButton disabled={loading} text="Cadastro com Google" />
+        <GoogleAuthButton disabled={loading} text="Continuar com Google" />
 
         <div className="flex items-center gap-4 py-5">
-          <div className="flex-grow h-0.5 bg-gray-400" />
-          <p className="text-gray-400 text-lg">ou</p>
-          <div className="flex-grow h-0.5 bg-gray-400" />
+          <div className="h-px flex-grow bg-border" />
+          <p className="text-sm text-muted-foreground">ou</p>
+          <div className="h-px flex-grow bg-border" />
         </div>
 
         <form className="" onSubmit={handleCredentialsSubmit}>
           <div className="flex flex-col gap-4">
             <ValidatedInput
               title="Nome"
-              placeholder="Vagalume da Silva"
+              placeholder="Seu nome"
               name="name"
               type="text"
               value={name}
@@ -101,7 +101,7 @@ function CadastroForm() {
             ><RequiredTag/></ValidatedInput>
             <ValidatedInput
               title="E-mail"
-              placeholder="exemplo@noctiluz.com.br"
+              placeholder="voce@email.com"
               name="email"
               type="email"
               value={email}
@@ -125,7 +125,7 @@ function CadastroForm() {
               required
             ><RequiredTag/></ValidatedInput>
             <ValidatedInput
-              title="Confirmar Senha"
+              title="Confirmar senha"
               placeholder="Confirme sua senha"
               name="confirmPassword"
               type="password"
@@ -138,8 +138,8 @@ function CadastroForm() {
               iconContainerClassName="auth-icon"
               required
             ><RequiredTag/></ValidatedInput>
-            <p>
-              Senha deve ter pelo menos:
+            <div className="text-sm text-muted-foreground">
+              A senha precisa ter pelo menos:
               
               <PasswordRequirement 
                 text="1 letra maiúscula"
@@ -157,12 +157,12 @@ function CadastroForm() {
                 text="8 caracteres"
                 validateFunction={() => hasMinLength(password)}
               />
-            </p>
+            </div>
           </div>
-          <CredentialsButton disabled={loading} className="mt-6">Cadastro</CredentialsButton>
+          <CredentialsButton disabled={loading} className="mt-6">Criar conta</CredentialsButton>
         </form>
         
-        <Link href='/login' className="block w-fit mt-8 text-sm group">Já tem uma conta? <span className="text-pink-500 colorTransition border-b border-transparent group-hover:border-pink-500">Login</span></Link>
+        <Link href='/login' className="block w-fit mt-8 text-sm text-muted-foreground group">Já tem uma conta? <span className="font-semibold text-primary group-hover:underline underline-offset-4">Entrar</span></Link>
       </div>
     </div>
    );

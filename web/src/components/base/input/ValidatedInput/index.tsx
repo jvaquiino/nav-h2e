@@ -45,7 +45,8 @@ function ValidatedInput({
 
   const isControlled = value !== undefined && setValue !== undefined;
 
-  const showValid = externallyControlledValid ?? internalValid;
+  // Só mostra o ícone de validação depois que o usuário digitou algo.
+  const showValid = String(isControlled ? value : inputValue) === '' ? null : externallyControlledValid ?? internalValid;
   const inputCurrentValue = isControlled ? value : inputValue;
 
   const validate = useMemo(() => overrideValidate ?? ((val: string) => {
