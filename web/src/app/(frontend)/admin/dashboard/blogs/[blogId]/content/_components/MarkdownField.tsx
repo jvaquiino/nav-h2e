@@ -5,7 +5,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 import '@uiw/react-md-editor/markdown-editor.css';
-import '@uiw/react-markdown-preview/markdown-preview.css';
+import '@uiw/react-markdown-preview/markdown.css';
 import 'katex/dist/katex.min.css';
 
 interface MarkdownFieldProps {

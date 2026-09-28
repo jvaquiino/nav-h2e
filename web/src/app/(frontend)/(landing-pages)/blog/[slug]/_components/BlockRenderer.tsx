@@ -5,7 +5,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import type { BlogContentBlock } from '@/generated/prisma';
 
-import '@uiw/react-markdown-preview/markdown-preview.css';
+import '@uiw/react-markdown-preview/markdown.css';
 import 'katex/dist/katex.min.css';
 
 function isYoutubeUrl(url: string) {
@@ -35,6 +35,7 @@ export function BlockRenderer({ block }: { block: BlogContentBlock }) {
       <div className="aspect-video">
         <iframe
           src={toYoutubeEmbedUrl(block.videoUrl)}
+          title="Vídeo do artigo"
           className="w-full h-full rounded-lg"
           allowFullScreen
         />
