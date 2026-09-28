@@ -4,7 +4,7 @@ import { BrandMark } from "@/components/base/Hull";
 
 // TODO: confirmar e-mail e perfil do Instagram oficiais do projeto.
 const CONTACT = {
-  email: "hidrogenionaval@usp.br",
+  email: "navegantes.navh2e@usp.br",
   instagram: "nav.h2e",
 };
 
