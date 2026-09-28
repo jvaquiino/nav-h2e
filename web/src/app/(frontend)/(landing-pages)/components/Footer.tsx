@@ -1,38 +1,62 @@
 import Link from "next/link";
+import { Instagram, Mail } from "lucide-react";
+import { BrandMark } from "@/components/base/Hull";
+
+// TODO: confirmar e-mail e perfil do Instagram oficiais do projeto.
+const CONTACT = {
+  email: "hidrogenionaval@usp.br",
+  instagram: "nav.h2e",
+};
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border bg-gradient-soft">
-      <div className="container py-12">
-        <div className="grid md:grid-cols-3 gap-8">
+    <footer id="contato" className="scroll-mt-20 border-t border-sea-foreground/10 bg-sea text-sea-foreground">
+      <div className="container py-16">
+        <div className="grid gap-12 md:grid-cols-[1.5fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2 font-display font-bold text-lg mb-3">
-              <span className="w-8 h-8 rounded-lg bg-gradient-primary grid place-items-center text-primary-foreground text-sm">H₂</span>
-              <span>Hidrogênio Naval</span>
-            </div>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Apresentando o hidrogênio para o mundo. Um projeto de alunos da Engenharia Naval da Poli-USP.
+            <Link href="/" className="flex items-center gap-3 text-3xl font-extrabold tracking-tight [font-stretch:125%] md:text-4xl">
+              <BrandMark className="size-8" />
+              Hidrogênio Naval
+            </Link>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-sea-foreground/70">
+              Um projeto de alunos de Engenharia Naval e Oceânica da Escola Politécnica da Universidade de São Paulo.
             </p>
           </div>
+
           <div>
-            <h4 className="font-display font-semibold mb-3">Navegação</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><a href="#sobre" className="hover:text-primary transition-smooth">Sobre</a></li>
-              <li><Link href="/blog" className="hover:text-primary transition-smooth">Blog</Link></li>
-              <li><a href="#equipe" className="hover:text-primary transition-smooth">Equipe</a></li>
+            <h2 className="mb-4 text-sm font-semibold">Contato</h2>
+            <ul className="space-y-3 text-sm text-sea-foreground/80">
+              <li>
+                <a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-2 hover:text-primary-glow">
+                  <Mail className="size-4" />
+                  {CONTACT.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`https://instagram.com/${CONTACT.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:text-primary-glow"
+                >
+                  <Instagram className="size-4" />@{CONTACT.instagram}
+                </a>
+              </li>
             </ul>
           </div>
+
           <div>
-            <h4 className="font-display font-semibold mb-3">Instituição</h4>
-            <p className="text-sm text-muted-foreground">
-              Escola Politécnica<br/>Universidade de São Paulo<br/>Engenharia Naval e Oceânica
-            </p>
+            <h2 className="mb-4 text-sm font-semibold">Navegação</h2>
+            <ul className="space-y-3 text-sm text-sea-foreground/80">
+              <li><Link href="/#sobre" className="hover:text-primary-glow">Sobre o hidrogênio</Link></li>
+              <li><Link href="/blog" className="hover:text-primary-glow">Blog</Link></li>
+            </ul>
           </div>
         </div>
-        <div className="mt-10 pt-6 border-t border-border text-xs text-muted-foreground flex flex-col sm:flex-row justify-between gap-2">
-          <span>© 2026 nav-h2e · Poli-USP</span>
-          <span>Feito com 💚 por estudantes de Engenharia Naval</span>
-        </div>
+
+        <p className="mt-14 border-t border-sea-foreground/10 pt-6 text-xs text-sea-foreground/60">
+          © {new Date().getFullYear()} Hidrogênio Naval, Poli-USP.
+        </p>
       </div>
     </footer>
   );

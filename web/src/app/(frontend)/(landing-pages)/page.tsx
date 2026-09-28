@@ -1,6 +1,9 @@
 import Navbar from "@/components/base/nav";
 import Hero from "./components/Hero";
-import About from "./components/About";
+import EnergyChart from "./components/EnergyChart";
+import HydrogenCycle from "./components/HydrogenCycle";
+import LatestPosts from "./components/LatestPosts";
+import AskAssistant from "./components/AskAssistant";
 import Footer from "./components/Footer";
 
 export default async function Home() {
@@ -9,7 +12,10 @@ export default async function Home() {
       <Navbar />
       <main>
         <Hero />
-        <About />
+        <EnergyChart />
+        <HydrogenCycle />
+        <LatestPosts />
+        <AskAssistant />
       </main>
       <Footer />
     </div>
