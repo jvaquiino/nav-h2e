@@ -34,6 +34,7 @@
     "embla-carousel-react": "^8.6.0",
     "katex": "^0.18.4",
     "lucide-react": "^0.548.0",
+    "motion": "^13.4.4",
     "next": "16.2.9",
     "radix-ui": "^1.6.0",
     "react": "19.2.0",

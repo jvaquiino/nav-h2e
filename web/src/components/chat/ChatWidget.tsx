@@ -183,7 +183,7 @@ export function ChatWidget() {
         onClick={handleBubbleClick}
         aria-label={open ? 'Fechar chat' : 'Abrir chat sobre hidrogênio'}
         aria-expanded={open}
-        className="grid size-14 place-items-center rounded-full bg-sea text-sea-foreground shadow-glow ring-1 ring-sea-foreground/25 transition-transform hover:scale-105 active:scale-95"
+        className="grid size-14 place-items-center rounded-full bg-green-800 text-sea-foreground shadow-glow ring-1 ring-sea-foreground/25 transition-transform hover:scale-105 active:scale-95"
       >
         {open ? <X className="size-6" /> : <MessageCircle className="size-6" />}
       </button>
